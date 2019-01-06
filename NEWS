@@ -16,6 +16,7 @@ STABLE RELEASE 1.0.4 :
 
 # Swedish localization (credits do Josef Andersson)
 # Portability fixes.
+# A C11 compiler is now necessary (instead of GNU extensions).
 
 ============================================================================
 STABLE RELEASE 1.0.3 :

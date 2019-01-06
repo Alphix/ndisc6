@@ -26,6 +26,7 @@
 
 #include <string.h>
 #include <inttypes.h>
+#include <stdalign.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -51,21 +52,22 @@ send_syn_probe (int fd, unsigned ttl, unsigned n, size_t plen, uint16_t port)
 	if (plen < sizeof (struct tcphdr))
 		plen = sizeof (struct tcphdr);
 
+	alignas (struct tcphdr) char buf[plen];
 	struct
 	{
 		struct tcphdr th;
-		uint8_t payload[plen - sizeof (struct tcphdr)];
-	} packet;
+		uint8_t payload[];
+	} *packet = (void *)buf;
 
-	memset (&packet, 0, sizeof (packet));
-	packet.th.th_sport = sport;
-	packet.th.th_dport = port;
-	packet.th.th_seq = htonl ((ttl << 24) | (n << 16) | (uint16_t)getpid ());
-	packet.th.th_off = sizeof (packet.th) / 4;
-	packet.th.th_flags = TH_SYN | (ecn ? (TH_ECE | TH_CWR) : 0);
-	packet.th.th_win = htons (TCP_WINDOW);
+	memset(packet, 0, plen);
+	packet->th.th_sport = sport;
+	packet->th.th_dport = port;
+	packet->th.th_seq = htonl((ttl << 24) | (n << 16) | (getpid() & 0xffff));
+	packet->th.th_off = sizeof (packet->th) / 4;
+	packet->th.th_flags = TH_SYN | (ecn ? (TH_ECE | TH_CWR) : 0);
+	packet->th.th_win = htons(TCP_WINDOW);
 
-	return send_payload (fd, &packet, plen, ttl);
+	return send_payload(fd, packet, plen, ttl);
 }
 
 
@@ -128,21 +130,22 @@ send_ack_probe (int fd, unsigned ttl, unsigned n, size_t plen, uint16_t port)
 	if (plen < sizeof (struct tcphdr))
 		plen = sizeof (struct tcphdr);
 
+	alignas (struct tcphdr) char buf[plen];
 	struct
 	{
 		struct tcphdr th;
-		uint8_t payload[plen - sizeof (struct tcphdr)];
-	} packet;
+		uint8_t payload[];
+	} *packet = (void *)buf;
 
-	memset (&packet, 0, sizeof (packet));
-	packet.th.th_sport = sport;
-	packet.th.th_dport = port;
-	packet.th.th_ack = htonl ((ttl << 24) | (n << 16) | (uint16_t)getpid ());
-	packet.th.th_off = sizeof (packet.th) / 4;
-	packet.th.th_flags = TH_ACK;
-	packet.th.th_win = htons (TCP_WINDOW);
+	memset(packet, 0, plen);
+	packet->th.th_sport = sport;
+	packet->th.th_dport = port;
+	packet->th.th_ack = htonl((ttl << 24) | (n << 16) | (getpid () & 0xffff));
+	packet->th.th_off = sizeof (packet->th) / 4;
+	packet->th.th_flags = TH_ACK;
+	packet->th.th_win = htons(TCP_WINDOW);
 
-	return send_payload (fd, &packet, plen, ttl);
+	return send_payload(fd, packet, plen, ttl);
 }
 
 

@@ -437,6 +437,7 @@ icmp_recv (int fd, tracetest_t *res, int *attempt, int *hlim,
 				final = false; // intermediary reponse
 				break;
 			}
+			/* fall through */
 		default: // should not happen (ICMPv6 filter)
 			return 0;
 	}

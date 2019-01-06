@@ -22,6 +22,7 @@
 #endif
 
 #include <string.h>
+#include <stdalign.h>
 #include <stdbool.h>
 #include <stdint.h> // uint16_t
 
@@ -40,19 +41,20 @@ send_echo_probe (int fd, unsigned ttl, unsigned n, size_t plen, uint16_t port)
 	if (plen < sizeof (struct icmp6_hdr))
 		plen = sizeof (struct icmp6_hdr);
 
+	alignas (struct icmp6_hdr) char buf[plen];
 	struct
 	{
 		struct icmp6_hdr ih;
-		uint8_t payload[plen - sizeof (struct icmp6_hdr)];
-	} packet;
-	memset (&packet, 0, plen);
+		uint8_t payload[];
+	} *packet = (void *)buf;
 
-	packet.ih.icmp6_type = ICMP6_ECHO_REQUEST;
-	packet.ih.icmp6_id = htons (getpid ());
-	packet.ih.icmp6_seq = htons ((ttl << 8) | (n & 0xff));
+	memset(packet, 0, plen);
+	packet->ih.icmp6_type = ICMP6_ECHO_REQUEST;
+	packet->ih.icmp6_id = htons(getpid ());
+	packet->ih.icmp6_seq = htons((ttl << 8) | (n & 0xff));
 	(void)port;
 
-	return send_payload (fd, &packet.ih, plen, ttl);
+	return send_payload(fd, packet, plen, ttl);
 }
 
 

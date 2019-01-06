@@ -25,6 +25,7 @@
 #define _DEFAULT_SOURCE 1
 
 #include <string.h>
+#include <stdalign.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -43,25 +44,26 @@ send_udp_probe (int fd, unsigned ttl, unsigned n, size_t plen, uint16_t port)
 	if (plen < sizeof (struct udphdr))
 		plen = sizeof (struct udphdr);
 
+	alignas (struct udphdr) char buf[plen];
 	struct
 	{
 		struct udphdr uh;
-		uint8_t payload[plen - sizeof (struct udphdr)];
-	} packet;
-	memset (&packet, 0, plen);
+		uint8_t payload[];
+	} *packet = (void *)buf;
 
+	memset(packet, 0, plen);
 	(void)n;
-	packet.uh.uh_sport = sport;
-	packet.uh.uh_dport = htons (ntohs (port) + ttl);
+	packet->uh.uh_sport = sport;
+	packet->uh.uh_dport = htons(ntohs(port) + ttl);
 	/* For UDP-Lite we have full checksum coverage, if only because the
 	 * IPV6_CHECKSUM setsockopt only supports full coverage. Hence
 	 * we can set coverage to the length of the packet, even though zero
 	 * would be more idiosyncrasic. */
-	packet.uh.uh_ulen = htons (plen);
+	packet->uh.uh_ulen = htons(plen);
 	/*if (plen > sizeof (struct udphdr))
-		packet.payload[0] = (uint8_t)ttl;*/
+		packet->payload[0] = (uint8_t)ttl;*/
 
-	return send_payload (fd, &packet, plen, ttl);
+	return send_payload(fd, packet, plen, ttl);
 }
 
 

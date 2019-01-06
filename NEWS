@@ -15,7 +15,7 @@ provided manual pages.
 STABLE RELEASE 1.0.4 :
 
 # Swedish localization (credits do Josef Andersson)
-# Fix dnssort with newer versions of Perl 5 interpreter.
+# Portability fixes.
 
 ============================================================================
 STABLE RELEASE 1.0.3 :

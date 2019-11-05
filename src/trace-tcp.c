@@ -21,7 +21,6 @@
 # include <config.h>
 #endif
 
-#undef _GNU_SOURCE
 #define _DEFAULT_SOURCE 1
 
 #include <string.h>

@@ -297,7 +297,6 @@ void parse_dnssl (const struct nd_opt_hdr *opt, unsigned int ifindex)
 	size_t nd_opt_len = opt->nd_opt_len;
 	uint64_t lifetime;
 	char *dom_list;
-	size_t last_dom_len = 0;
 
 	dnssl_opt = (struct nd_opt_dnssl *) opt;
 

@@ -385,7 +385,8 @@ int parse_nd_opts (const struct nd_opt_hdr *opt, size_t opts_len, unsigned int i
 	     opt = (const struct nd_opt_hdr *)
 		   ((const uint8_t *) opt + (opt->nd_opt_len << 3))) {
 
-		if (opt->nd_opt_len == 0 || opts_len < (opt->nd_opt_len << 3))
+		if (opt->nd_opt_len == 0
+		 || opts_len < ((size_t)opt->nd_opt_len << 3))
 			return -1;
 
 		switch (opt->nd_opt_type)

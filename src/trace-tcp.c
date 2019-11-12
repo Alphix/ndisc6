@@ -21,8 +21,6 @@
 # include <config.h>
 #endif
 
-#define _DEFAULT_SOURCE 1
-
 #include <string.h>
 #include <inttypes.h>
 #include <stdalign.h>

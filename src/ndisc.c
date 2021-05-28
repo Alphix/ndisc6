@@ -77,12 +77,13 @@
 
 enum ndisc_flags
 {
-	NDISC_VERBOSE1=0x1,
-	NDISC_VERBOSE2=0x2,
-	NDISC_VERBOSE3=0x3,
-	NDISC_VERBOSE =0x3,
-	NDISC_NUMERIC =0x4,
-	NDISC_SINGLE  =0x8,
+	NDISC_VERBOSE1  =0x1,
+	NDISC_VERBOSE2  =0x2,
+	NDISC_VERBOSE3  =0x3,
+	NDISC_VERBOSE   =0x3,
+	NDISC_NUMERIC   =0x4,
+	NDISC_SINGLE    =0x8,
+	NDISC_NO_SOLICIT=0x10,
 };
 
 
@@ -814,7 +815,8 @@ ndisc (const char *name, const char *ifname, unsigned flags, unsigned retry,
 		while (retry > 0)
 		{
 			/* sends a Solitication */
-			if (sendto (fd, &packet, plen, 0,
+			if (!(flags & NDISC_NO_SOLICIT)
+			 && sendto (fd, &packet, plen, 0,
 			            (const struct sockaddr *)&dst,
 			            sizeof (dst)) != plen)
 			{
@@ -866,16 +868,17 @@ usage (const char *path)
 	printf (gettext (ndisc_usage), path);
 
 	printf (_("\n"
-"  -1, --single   display first response and exit\n"
-"  -h, --help     display this help and exit\n"
-"  -m, --multiple wait and display all responses\n"
-"  -n, --numeric  don't resolve host names\n"
-"  -q, --quiet    only print the %s (mainly for scripts)\n"
-"  -r, --retry    maximum number of attempts (default: 3)\n"
-"  -s, --source   specify source IPv6 address\n"
-"  -V, --version  display program version and exit\n"
-"  -v, --verbose  verbose display (this is the default)\n"
-"  -w, --wait     how long to wait for a response [ms] (default: 1000)\n"
+"  -1, --single     display first response and exit\n"
+"  -d, --no-solicit don't send any solicitation messages\n"
+"  -h, --help       display this help and exit\n"
+"  -m, --multiple   wait and display all responses\n"
+"  -n, --numeric    don't resolve host names\n"
+"  -q, --quiet      only print the %s (mainly for scripts)\n"
+"  -r, --retry      maximum number of attempts (default: 3)\n"
+"  -s, --source     specify source IPv6 address\n"
+"  -V, --version    display program version and exit\n"
+"  -v, --verbose    verbose display (this is the default)\n"
+"  -w, --wait       how long to wait for a response [ms] (default: 1000)\n"
 	           "\n"), gettext (ndisc_dataname));
 
 	return 0;
@@ -902,17 +905,18 @@ version (void)
 
 static const struct option opts[] = 
 {
-	{ "single",   no_argument,       NULL, '1' },
-	{ "help",     no_argument,       NULL, 'h' },
-	{ "multiple", required_argument, NULL, 'm' },
-	{ "numeric",  no_argument,       NULL, 'n' },
-	{ "quiet",    no_argument,       NULL, 'q' },
-	{ "retry",    required_argument, NULL, 'r' },
-	{ "source",   required_argument, NULL, 's' },
-	{ "version",  no_argument,       NULL, 'V' },
-	{ "verbose",  no_argument,       NULL, 'v' },
-	{ "wait",     required_argument, NULL, 'w' },
-	{ NULL,       0,                 NULL, 0   }
+	{ "single",     no_argument,       NULL, '1' },
+	{ "no-solicit", no_argument,       NULL, 'd' },
+	{ "help",       no_argument,       NULL, 'h' },
+	{ "multiple",   required_argument, NULL, 'm' },
+	{ "numeric",    no_argument,       NULL, 'n' },
+	{ "quiet",      no_argument,       NULL, 'q' },
+	{ "retry",      required_argument, NULL, 'r' },
+	{ "source",     required_argument, NULL, 's' },
+	{ "version",    no_argument,       NULL, 'V' },
+	{ "verbose",    no_argument,       NULL, 'v' },
+	{ "wait",       required_argument, NULL, 'w' },
+	{ NULL,         0,                 NULL, 0   }
 };
 
 
@@ -935,12 +939,16 @@ main (int argc, char *argv[])
 	unsigned retry = 3, flags = ndisc_default, wait_ms = nd_delay_ms;
 	const char *hostname, *ifname, *source = NULL;
 
-	while ((val = getopt_long (argc, argv, "1hmnqr:s:Vvw:", opts, NULL)) != EOF)
+	while ((val = getopt_long (argc, argv, "1dhmnqr:s:Vvw:", opts, NULL)) != EOF)
 	{
 		switch (val)
 		{
 			case '1':
 				flags |= NDISC_SINGLE;
+				break;
+
+			case 'd':
+				flags |= NDISC_NO_SOLICIT;
 				break;
 
 			case 'h':

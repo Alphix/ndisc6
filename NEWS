@@ -12,6 +12,12 @@ informations on this program, see README. For syntax details, read the
 provided manual pages.
 
 ============================================================================
+STABLE RELEASE 1.0.5 :
+
+# Add --no-solicit option to skip sending the discovery packet.
+# Ignore multicast advertisements when discovery was sent as unicast.
+
+============================================================================
 STABLE RELEASE 1.0.4 :
 
 # Swedish localization (credits do Josef Andersson)

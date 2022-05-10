@@ -508,8 +508,11 @@ static int worker (int pipe, const char *resolvpath, const char *username)
 
 		if (servers.count)
 		{
-			/* Compute event deadline */
+			/* Compute event deadline, min of servers and domains */
 			time_t expiry = servers.list[servers.count - 1].expiry;
+			if ((domains.count) &&
+			    (domains.list[domains.count - 1].expiry < expiry))
+				expiry = domains.list[domains.count - 1].expiry;
 			if (ts.tv_sec < expiry)
 				ts.tv_sec = expiry - ts.tv_sec;
 			else

@@ -291,7 +291,7 @@ void parse_rdnss (const struct nd_opt_hdr *opt, unsigned int ifindex)
 		rdnss_update(addr, ifindex, lifetime);
 }
 
-void parse_dnssl (const struct nd_opt_hdr *opt, unsigned int ifindex)
+void parse_dnssl (const struct nd_opt_hdr *opt)
 {
 	struct nd_opt_dnssl *dnssl_opt;
 	size_t nd_opt_len = opt->nd_opt_len;
@@ -396,7 +396,7 @@ int parse_nd_opts (const struct nd_opt_hdr *opt, size_t opts_len, unsigned int i
 			break;
 
 		case ND_OPT_DNSSL:
-			parse_dnssl(opt, ifindex);
+			parse_dnssl(opt);
 			break;
 
 		default:

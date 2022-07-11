@@ -498,6 +498,30 @@ parsednssl (const uint8_t *opt)
 
 
 static int
+parsepref64 (const uint8_t *opt)
+{
+	uint16_t lifetime_plc = ntohs(((const uint16_t *)opt)[1]);
+	uint16_t lifetime = lifetime_plc & 0xfff8;
+	struct in6_addr pref64;
+	char str[INET6_ADDRSTRLEN];
+	const int preflen[] = {96, 64, 56, 48, 40, 32, -1, -1};
+
+	if (opt[1] != 2)
+		return -1;
+
+	memcpy(&pref64, opt + 4, 12);
+	if (inet_ntop (AF_INET6, &pref64, str, sizeof (str)) == NULL)
+		return -1;
+
+	printf (_(" NAT64 prefix             : %s/%d\n"), str,
+			preflen[lifetime_plc & 0x7]);
+	printf (_("  NAT64 prefix lifetime   : %12u (    0x%04x) %s\n"),
+		lifetime, lifetime, ngettext ("second", "seconds", lifetime));
+	return 0;
+}
+
+
+static int
 parseadv (const uint8_t *buf, size_t len, const struct sockaddr_in6 *tgt,
           bool verbose)
 {
@@ -612,6 +636,10 @@ parseadv (const uint8_t *buf, size_t len, const struct sockaddr_in6 *tgt,
 
 			case 31: // RFC6106
 				parsednssl (ptr);
+				break;
+
+			case 38: // RFC8781
+				parsepref64 (ptr);
 				break;
 		}
 		/* skips unrecognized option */

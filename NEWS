@@ -1,5 +1,5 @@
 RELEASE NOTES for NDisc6
-version 1.0.4
+version 1.0.6
 =========================
 
   There are no known issues at the moment.
@@ -10,6 +10,12 @@ Thanks for your help.
   You can find major changes since version 0.1.5 below. For more general
 informations on this program, see README. For syntax details, read the
 provided manual pages.
+
+============================================================================
+STABLE RELEASE 1.0.6 :
+
+# ndisc6: print NAT64 prefix if present.
+# rdnssd: fix timeout calculation.
 
 ============================================================================
 STABLE RELEASE 1.0.5 :

@@ -312,7 +312,17 @@ msgstr " Liste de recherche DNS   : "
 msgid "  DNS search list lifetime: "
 msgstr "  Validité de la liste DNS: "
 
-#: src/ndisc.c:522
+#: src/ndisc.c:517
+#, c-format
+msgid " NAT64 prefix             : %s/%<PRIu8>\n"
+msgstr " Préfixe NAT64            : %s/%<PRIu8>\n"
+
+#: src/ndisc.c:519
+#, c-format
+msgid "  NAT64 prefix lifetime   : %12u (    0x%04x) %s\n"
+msgstr "  Validité du préfixe NAT : %12u (    0x%04x) %s\n"
+
+#: src/ndisc.c:547
 msgid "Hop limit                 :    "
 msgstr "Limite de saut (TTL)      :    "
 

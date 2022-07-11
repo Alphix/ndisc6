@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ndisc6 1.0.3\n"
 "Report-Msgid-Bugs-To: remi@remlab.net\n"
-"POT-Creation-Date: 2021-09-14 21:53+0300\n"
+"POT-Creation-Date: 2022-07-11 19:42+0300\n"
 "PO-Revision-Date: 2014-12-14 12:53+0100\n"
 "Last-Translator: Petr Pisar <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -29,28 +29,28 @@ msgstr "%s nelze zapsat: %m"
 msgid "Cannot find user \"%s\""
 msgstr "Nelze nalézt uživatele „%s“"
 
-#: rdnss/rdnssd.c:425 rdnss/rdnssd.c:430 rdnss/rdnssd.c:435 rdnss/rdnssd.c:525
-#: rdnss/rdnssd.c:609 rdnss/rdnssd.c:648
+#: rdnss/rdnssd.c:425 rdnss/rdnssd.c:430 rdnss/rdnssd.c:435 rdnss/rdnssd.c:528
+#: rdnss/rdnssd.c:612 rdnss/rdnssd.c:651
 #, c-format
 msgid "Fatal error (%s): %m"
 msgstr "Nepřekonatelná chyba (%s): %m"
 
-#: rdnss/rdnssd.c:552 rdnss/rdnssd.c:556
+#: rdnss/rdnssd.c:555 rdnss/rdnssd.c:559
 #, c-format
 msgid "Cannot run \"%s\": %m"
 msgstr "Nelze spustit „%s“: %m"
 
-#: rdnss/rdnssd.c:588
+#: rdnss/rdnssd.c:591
 msgid "Child process hung up unexpectedly, aborting"
 msgstr "Proces potomka se neočekávaně zasekl, ukončuji činnost"
 
-#: rdnss/rdnssd.c:712 src/addrinfo.c:143 src/ndisc.c:865 src/tcpspray.c:269
+#: rdnss/rdnssd.c:715 src/addrinfo.c:143 src/ndisc.c:894 src/tcpspray.c:269
 #: src/tcptraceroute.c:41 src/traceroute.c:1207
 #, c-format
 msgid "Try \"%s -h\" for more information.\n"
 msgstr "Podrobnosti získáte příkazem „%s -h“.\n"
 
-#: rdnss/rdnssd.c:722
+#: rdnss/rdnssd.c:725
 #, c-format
 msgid ""
 "Usage: %s [OPTIONS]\n"
@@ -76,34 +76,34 @@ msgstr ""
 "  -u, --user        přebije uživatele, na jehož UID se mát přepnout\n"
 "  -V, --version     zobrazí verzi programu a skončí\n"
 
-#: rdnss/rdnssd.c:739
+#: rdnss/rdnssd.c:742
 #, c-format
 msgid "rdnssd: IPv6 Recursive DNS Server discovery Daemon %s (%s)\n"
 msgstr "rdnssd: Démon hledající IPv6 rekurzivní DNS servery (RDNSSD) %s (%s)\n"
 
 # FIXME: Localize %1$s date using strftime("%x")
-#: rdnss/rdnssd.c:741 src/addrinfo.c:151 src/ndisc.c:898 src/tcpspray.c:305
+#: rdnss/rdnssd.c:744 src/addrinfo.c:151 src/ndisc.c:927 src/tcpspray.c:305
 #: src/traceroute.c:1254
 #, c-format
 msgid " built %s on %s\n"
 msgstr " sestaveno %s na %s\n"
 
-#: rdnss/rdnssd.c:742 src/addrinfo.c:152 src/ndisc.c:900 src/tcpspray.c:306
+#: rdnss/rdnssd.c:745 src/addrinfo.c:152 src/ndisc.c:929 src/tcpspray.c:306
 #: src/traceroute.c:1255
 #, c-format
 msgid "Configured with: %s\n"
 msgstr "Konfigurováno s: %s\n"
 
-#: rdnss/rdnssd.c:743
+#: rdnss/rdnssd.c:746
 msgid "Written by Pierre Ynard and Remi Denis-Courmont\n"
 msgstr "Napsali Pierre Ynard a Rémi Denis-Courmont\n"
 
-#: rdnss/rdnssd.c:745
+#: rdnss/rdnssd.c:748
 #, c-format
 msgid "Copyright (C) %u-%u Pierre Ynard, Remi Denis-Courmont\n"
 msgstr "Copyright © %u–%u Pierre Ynard, Rémi Denis-Courmont\n"
 
-#: rdnss/rdnssd.c:748 src/addrinfo.c:156 src/ndisc.c:904 src/tcpspray.c:310
+#: rdnss/rdnssd.c:751 src/addrinfo.c:156 src/ndisc.c:933 src/tcpspray.c:310
 #: src/traceroute.c:1259
 msgid ""
 "This is free software; see the source for copying conditions.\n"
@@ -114,7 +114,7 @@ msgstr ""
 "ve zdrojových kódech. Není poskytována ŽÁDNÁ záruka, dokonce ani na\n"
 "OBCHODOVATELNOST nebo VHODNOST PRO URČITÝ ÚČEL.\n"
 
-#: rdnss/rdnssd.c:861
+#: rdnss/rdnssd.c:864
 #, c-format
 msgid "Cannot create %s (%m) - already running?"
 msgstr "Nelze vytvořit %s (%m) – tento program již běží?"
@@ -155,11 +155,11 @@ msgstr ""
 msgid "addrinfo %s (%s)\n"
 msgstr "addrinfo %s (%s)\n"
 
-#: src/addrinfo.c:153 src/ndisc.c:901 src/tcpspray.c:307 src/traceroute.c:1256
+#: src/addrinfo.c:153 src/ndisc.c:930 src/tcpspray.c:307 src/traceroute.c:1256
 msgid "Written by Remi Denis-Courmont\n"
 msgstr "Napsal Rémi Denis-Courmont\n"
 
-#: src/addrinfo.c:155 src/ndisc.c:903 src/tcpspray.c:309 src/traceroute.c:1258
+#: src/addrinfo.c:155 src/ndisc.c:932 src/tcpspray.c:309 src/traceroute.c:1258
 #, c-format
 msgid "Copyright (C) %u-%u Remi Denis-Courmont\n"
 msgstr "Copyright © %u–%u Rémi Denis-Courmont\n"
@@ -204,12 +204,12 @@ msgstr "oznamované předpony"
 msgid "    infinite (0xffffffff)\n"
 msgstr "   nekonečno (0xffffffff)\n"
 
-#: src/ndisc.c:342 src/ndisc.c:544 src/ndisc.c:551 src/ndisc.c:560
+#: src/ndisc.c:342 src/ndisc.c:569 src/ndisc.c:576 src/ndisc.c:585
 #, c-format
 msgid "%12u (0x%08x) %s\n"
 msgstr "%12u (0x%08x) %s\n"
 
-#: src/ndisc.c:343 src/ndisc.c:545 src/tcpspray.c:119
+#: src/ndisc.c:343 src/ndisc.c:520 src/ndisc.c:570 src/tcpspray.c:119
 msgid "second"
 msgid_plural "seconds"
 msgstr[0] "sekunda"
@@ -225,13 +225,13 @@ msgstr " Předpona                 : "
 msgid "  On-link                 :          %3s\n"
 msgstr "  Na lince                :          %3s\n"
 
-#: src/ndisc.c:369 src/ndisc.c:371 src/ndisc.c:532 src/ndisc.c:534
-#: src/ndisc.c:536 src/ndisc.c:539
+#: src/ndisc.c:369 src/ndisc.c:371 src/ndisc.c:557 src/ndisc.c:559
+#: src/ndisc.c:561 src/ndisc.c:564
 msgid "Yes"
 msgstr "Ano"
 
-#: src/ndisc.c:369 src/ndisc.c:371 src/ndisc.c:532 src/ndisc.c:534
-#: src/ndisc.c:536 src/ndisc.c:539
+#: src/ndisc.c:369 src/ndisc.c:371 src/ndisc.c:557 src/ndisc.c:559
+#: src/ndisc.c:561 src/ndisc.c:564
 msgid "No"
 msgstr "Ne"
 
@@ -319,107 +319,117 @@ msgstr " Vyhledávací seznam DNS   : "
 msgid "  DNS search list lifetime: "
 msgstr "  Životnost vyhledávacího seznamu DNS : "
 
-#: src/ndisc.c:522
+#: src/ndisc.c:517
+#, fuzzy, c-format
+msgid " NAT64 prefix             : %s/%<PRIu8>\n"
+msgstr " Cesta                    : %s/%<PRIu8>\n"
+
+#: src/ndisc.c:519
+#, c-format
+msgid "  NAT64 prefix lifetime   : %12u (    0x%04x) %s\n"
+msgstr ""
+
+#: src/ndisc.c:547
 msgid "Hop limit                 :    "
 msgstr "Hop limit                 :    "
 
-#: src/ndisc.c:525
+#: src/ndisc.c:550
 #, c-format
 msgid "      %3u"
 msgstr "      %3u"
 
-#: src/ndisc.c:527
+#: src/ndisc.c:552
 msgid "undefined"
 msgstr "nedefinováno"
 
-#: src/ndisc.c:528
+#: src/ndisc.c:553
 #, c-format
 msgid " (      0x%02x)\n"
 msgstr " (      0x%02x)\n"
 
-#: src/ndisc.c:531
+#: src/ndisc.c:556
 #, c-format
 msgid "Stateful address conf.    :          %3s\n"
 msgstr "Stavová konfigurace adres :          %3s\n"
 
-#: src/ndisc.c:533
+#: src/ndisc.c:558
 #, c-format
 msgid "Stateful other conf.      :          %3s\n"
 msgstr "Stavová další konfigurace :          %3s\n"
 
-#: src/ndisc.c:535
+#: src/ndisc.c:560
 #, c-format
 msgid "Mobile home agent         :          %3s\n"
 msgstr "Domácí agent IP mobility  :          %3s\n"
 
-#: src/ndisc.c:537
+#: src/ndisc.c:562
 #, c-format
 msgid "Router preference         :       %6s\n"
 msgstr "Přednost routeru          :       %6s\n"
 
-#: src/ndisc.c:538
+#: src/ndisc.c:563
 #, c-format
 msgid "Neighbor discovery proxy  :          %3s\n"
 msgstr "Proxy objevování sousedů  :          %3s\n"
 
-#: src/ndisc.c:542
+#: src/ndisc.c:567
 msgid "Router lifetime           : "
 msgstr "Životnost routeru         : "
 
-#: src/ndisc.c:548
+#: src/ndisc.c:573
 msgid "Reachable time            : "
 msgstr "Doba dosažitelnosti       : "
 
-#: src/ndisc.c:552 src/ndisc.c:561
+#: src/ndisc.c:577 src/ndisc.c:586
 msgid "millisecond"
 msgid_plural "milliseconds"
 msgstr[0] "milisekunda"
 msgstr[1] "milisekundy"
 msgstr[2] "milisekund"
 
-#: src/ndisc.c:554 src/ndisc.c:563
+#: src/ndisc.c:579 src/ndisc.c:588
 msgid " unspecified (0x00000000)\n"
 msgstr "    neurčeno (0x00000000)\n"
 
-#: src/ndisc.c:557
+#: src/ndisc.c:582
 msgid "Retransmit time           : "
 msgstr "Doba pro znovuvyslání     : "
 
-#: src/ndisc.c:586
+#: src/ndisc.c:611
 msgid " Source link-layer address: "
 msgstr " Linková adresa zdroje    : "
 
-#: src/ndisc.c:725
+#: src/ndisc.c:754
 msgid "Receiving ICMPv6 packet"
 msgstr "Přijímám ICMPv6 packet"
 
-#: src/ndisc.c:747
+#: src/ndisc.c:776
 #, c-format
 msgid " from %s\n"
 msgstr " od %s\n"
 
-#: src/ndisc.c:772 src/traceroute.c:922 src/traceroute.c:930
+#: src/ndisc.c:801 src/traceroute.c:922 src/traceroute.c:930
 msgid "Raw IPv6 socket"
 msgstr "Syrový IPv6 socket"
 
-#: src/ndisc.c:807
+#: src/ndisc.c:836
 #, c-format
 msgid "Soliciting %s (%s) on %s...\n"
 msgstr "Dožaduji se %s (%s) na %s…\n"
 
-#: src/ndisc.c:828
+#: src/ndisc.c:857
 msgid "Sending ICMPv6 packet"
 msgstr "Odesílám ICMPv6 packet"
 
-#: src/ndisc.c:844
+#: src/ndisc.c:873
 msgid "Timed out."
 msgstr "Čas vypršel."
 
-#: src/ndisc.c:853
+#: src/ndisc.c:882
 msgid "No response."
 msgstr "Žádná odpověď."
 
-#: src/ndisc.c:875
+#: src/ndisc.c:904
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -449,7 +459,7 @@ msgstr ""
 "  -w, --wait     jak dlouho čekat na odpověď [ms] (implicitně: 1000)\n"
 "\n"
 
-#: src/ndisc.c:897
+#: src/ndisc.c:926
 #, c-format
 msgid "ndisc6: IPv6 Neighbor/Router Discovery userland tool %s (%s)\n"
 msgstr "ndisc6: nástroj pro hledání IPv6 sousedů/routerů %s (%s)\n"

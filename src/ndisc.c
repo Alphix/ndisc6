@@ -760,11 +760,6 @@ recvadv (int fd, const struct sockaddr_in6 *tgt, unsigned wait_ms,
 		 && (addr.sin6_scope_id != tgt->sin6_scope_id))
 			continue;
 
-		/* We don't want non-matching addresses for unicast targets */
-		if (!IN6_IS_ADDR_MULTICAST(&tgt->sin6_addr)
-		 && memcmp(&addr.sin6_addr, &tgt->sin6_addr, 16))
-			continue;
-
 		if (parseadv (buf.b, val, tgt, (flags & NDISC_VERBOSE) != 0) == 0)
 		{
 			if (flags & NDISC_VERBOSE)

@@ -1,5 +1,5 @@
 RELEASE NOTES for NDisc6
-version 1.0.6
+version 1.0.7
 =========================
 
   There are no known issues at the moment.
@@ -12,6 +12,12 @@ informations on this program, see README. For syntax details, read the
 provided manual pages.
 
 ============================================================================
+STABLE RELEASE 1.0.7 :
+
+# Do not ignore multicast advertisements when discovery was sent as unicast
+  (fix regression from 1.0.5).
+
+============================================================================
 STABLE RELEASE 1.0.6 :
 
 # ndisc6: print NAT64 prefix if present.
@@ -21,7 +27,6 @@ STABLE RELEASE 1.0.6 :
 STABLE RELEASE 1.0.5 :
 
 # Add --no-solicit option to skip sending the discovery packet.
-# Ignore multicast advertisements when discovery was sent as unicast.
 
 ============================================================================
 STABLE RELEASE 1.0.4 :

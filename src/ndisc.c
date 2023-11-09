@@ -511,6 +511,7 @@ parsepref64 (const uint8_t *opt)
 		return -1;
 
 	memcpy(&pref64, opt + 4, 12);
+	pref64.s6_addr32[3] = 0;
 	if (inet_ntop (AF_INET6, &pref64, str, sizeof (str)) == NULL)
 		return -1;
 

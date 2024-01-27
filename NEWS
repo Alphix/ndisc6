@@ -12,6 +12,11 @@ informations on this program, see README. For syntax details, read the
 provided manual pages.
 
 ============================================================================
+STABLE RELEASE 1.0.8 :
+
+# Fix potential garbage whilst prining an advertised prefix.
+
+============================================================================
 STABLE RELEASE 1.0.7 :
 
 # Do not ignore multicast advertisements when discovery was sent as unicast

@@ -537,6 +537,261 @@ parsepref64 (const uint8_t *opt)
 }
 
 
+/* https://www.iana.org/assignments/dns-svcb/dns-svcb.xhtml */
+static void
+print_svc_key (uint16_t svc_key)
+{
+	switch (svc_key) {
+	case 0:
+		printf ("mandatory");
+		break;
+	case 1:
+		printf ("alpn");
+		break;
+	case 2:
+		printf ("no-default-alpn");
+		break;
+	case 3:
+		printf ("port");
+		break;
+	case 4:
+		printf ("ipv4hint");
+		break;
+	case 5:
+		printf ("ech");
+		break;
+	case 6:
+		printf ("ipv6hint");
+		break;
+	case 7:
+		printf ("dohpath");
+		break;
+	case 8:
+		printf ("ohttp");
+		break;
+	case 65535:
+		printf (_("invalid"));
+		break;
+	default:
+		printf (_("unknown (%"PRIu16")"), svc_key);
+		break;
+	}
+}
+
+
+static void
+print_svc_value (uint16_t svc_key, const uint8_t *svc_val, uint16_t svc_val_len)
+{
+	switch (svc_key) {
+	case 0:
+		// mandatory - set of 2-octet svc keys
+		if (svc_val_len % 2) {
+			printf (_(" (invalid)"));
+			return;
+		}
+
+		printf ("=");
+		for (unsigned i = 0; i < svc_val_len / 2; i++)
+		{
+			uint16_t svc_mand_key;
+
+			if (i != 0)
+				printf (",");
+
+			svc_mand_key = svc_val[i * 2] << 8 | svc_val[i * 2 + 1];
+			print_svc_key(svc_mand_key);
+		}
+		break;
+
+	case 1:
+		// alpn - set of len-str pairs
+		printf ("=");
+		if (print_len_str_pairs (svc_val, svc_val_len, ",", false) < 0)
+			printf (_("(invalid)"));
+		break;
+
+	case 2:
+		// no-default-alpn
+		if (svc_val_len > 0)
+			printf (_(" (invalid)"));
+		break;
+
+	case 3:
+		// port
+		if (svc_val_len != 2)
+			printf (_(" (invalid)"));
+		else
+			printf ("=%"PRIu16, svc_val[0] << 8 | svc_val[1]);
+		break;
+
+	case 4:
+		// ipv4hint - 4 octet set
+		if (svc_val_len % 4) {
+			printf (_(" (invalid)"));
+			return;
+		}
+
+		printf ("=");
+		for (unsigned i = 0; i < svc_val_len / 4; i++) {
+			char str[INET_ADDRSTRLEN];
+
+			if (i != 0)
+				printf (",");
+
+			if (inet_ntop (AF_INET, svc_val + (4 * i), str,
+				       sizeof(str)) == NULL)
+				printf (_("(invalid)"));
+			else
+				printf ("%s", str);
+		}
+		break;
+
+	case 5:
+		// https://www.ietf.org/archive/id/draft-ietf-tls-svcb-ech-00.html#name-svcparam-for-ech-configurat
+		// https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-16#section-4
+		printf (_("=(%"PRIu16" bytes)"), svc_val_len);
+		break;
+
+	case 6:
+		// ipv6hint - set of ipv6 addrs
+		if (svc_val_len % 16) {
+			printf (_(" (invalid)"));
+			return;
+		}
+
+		printf ("=");
+		for (unsigned i = 0; i < svc_val_len % 16; i++) {
+			char str[INET6_ADDRSTRLEN];
+
+			if (i != 0)
+				printf (",");
+
+			if (inet_ntop (AF_INET6, svc_val + (16 * i), str,
+				       sizeof(str)) == NULL)
+				printf (_("(invalid)"));
+			else
+				printf ("%s", str);
+		}
+		break;
+
+	case 7:
+		// dohpath - string
+		printf ("=%.*s", svc_val_len, svc_val);
+		break;
+
+	case 8:
+		// ohttp - empty
+		if (svc_val_len > 0)
+			printf (_(" (invalid)"));
+		break;
+	}
+}
+
+
+static int
+parsednr (const uint8_t *opt)
+{
+	const uint8_t *base;
+	uint16_t optlen = opt[1] * 8;
+	uint16_t priority;
+	uint16_t adnlen;
+	uint16_t addrlen;
+	uint16_t svclen;
+	size_t r;
+
+	if (optlen < 10)
+		return -1;
+
+	optlen -= 10;
+	base = opt + 10;
+
+	priority = ntohs(((const uint16_t *)opt)[1]);
+	adnlen = ntohs(((const uint16_t *)opt)[4]);
+	if (adnlen > optlen)
+		return -1;
+
+	printf (_(" Encrypted DNS server     : "));
+	r = print_len_str_pairs (base, adnlen, ".", true);
+	printf ("\n");
+	if (r != adnlen)
+		return -1;
+
+	printf (_("  Priority                : %12"PRIu16" (0x%08"PRIx16")\n"),
+		priority, priority);
+
+	optlen -= r;
+	base += r;
+	if (optlen < 2)
+		goto out;
+
+	addrlen = base[0] << 8 | base[1];
+	if (addrlen > optlen || addrlen % 16)
+		return -1;
+
+	optlen -= 2;
+	base += 2;
+
+	for (unsigned i = 0; i < addrlen / 16; i++)
+	{
+		char str[INET6_ADDRSTRLEN];
+
+		if (!inet_ntop (AF_INET6, base, str, sizeof (str)))
+			return -1;
+
+		printf (_("  Server IP               : %s\n"), str);
+		optlen -= 16;
+		base +=  16;
+	}
+
+	if (optlen < 2)
+		goto out;
+
+	svclen = base[0] << 8 | base[1];
+	if (svclen == 0)
+		goto out;
+
+	optlen -= 2;
+	base += 2;
+
+	if (svclen > optlen)
+		return -1;
+
+	printf (_("  Service parameters      : "));
+	for (unsigned i = 0; i < svclen;)
+	{
+		uint16_t svc_key;
+		uint16_t svc_val_len;
+
+		if (i != 0)
+			printf (" ");
+
+		if (i + 4 > svclen) {
+			printf (_("(invalid)"));
+			break;
+		}
+
+		svc_key = base[i + 0] << 8 | base[i + 1];
+		svc_val_len = base[i + 2] << 8 | base[i + 3];
+		i += 4;
+
+		if (i + svc_val_len > svclen) {
+			printf (_("(invalid)"));
+			break;
+		}
+
+		print_svc_key(svc_key);
+		print_svc_value(svc_key, base + i, svc_val_len);
+		i += svc_val_len;
+	}
+	printf ("\n");
+
+out:
+	fputs (_("  Encrypted DNS lifetime  : "), stdout);
+	print32time (((const uint32_t *)opt)[1]);
+	return 0;
+}
+
+
 static int
 parseadv (const uint8_t *buf, size_t len, const struct sockaddr_in6 *tgt,
           bool verbose)
@@ -656,6 +911,10 @@ parseadv (const uint8_t *buf, size_t len, const struct sockaddr_in6 *tgt,
 
 			case 38: // RFC8781
 				parsepref64 (ptr);
+				break;
+
+			case 144: // RFC9463
+				parsednr (ptr);
 				break;
 		}
 		/* skips unrecognized option */

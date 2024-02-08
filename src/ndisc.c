@@ -451,7 +451,7 @@ static int
 parsednssl (const uint8_t *opt)
 {
 	const uint8_t *base;
-	uint8_t optlen = opt[1];
+	uint16_t optlen = opt[1];
 	if (optlen < 2)
 		return -1;
 

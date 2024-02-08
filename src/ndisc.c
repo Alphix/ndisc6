@@ -344,6 +344,36 @@ print32time (uint32_t v)
 }
 
 
+static ssize_t
+print_len_str_pairs (const uint8_t *base, size_t optlen, const char *sep,
+		     bool trailing_zero)
+{
+	unsigned i = 0;
+
+	if (optlen < 1)
+		return -1;
+
+	while (base[i] && optlen != 0)
+	{
+		if (trailing_zero) {
+			if (base[i] + i + 1 >= optlen)
+				return -1;
+		} else {
+			if (base[i] + i >= optlen)
+				return -1;
+		}
+
+		printf ("%.*s", base[i], base + i + 1);
+
+		i += base[i] + 1;
+		if (base[i])
+			printf ("%s", sep);
+	}
+
+	return i + 1;
+}
+
+
 static int
 parseprefix (const struct nd_opt_prefix_info *pi, size_t optlen, bool verbose)
 {
@@ -455,40 +485,24 @@ parsednssl (const uint8_t *opt)
 	if (optlen < 2)
 		return -1;
 
-	printf (_(" DNS search list          : "));
+	printf (_(" DNS search list          :"));
 
 	optlen *= 8;
 	optlen -= 8;
 	base = opt + 8;
 
-	for (unsigned i = 0; i < optlen; i++)
+	while (optlen > 0)
 	{
-		char str[256];
-
-		if (!base[i])
-			break;
-
-		do
-		{
-			if (base[i] + i + 1 >= optlen)
-			{
-				printf("\n");
-				return -1;
-			}
-
-			memcpy (str, &base[i + 1], base[i]);
-			str[base[i]] = 0;
-
-			i += base[i] + 1;
-
-			printf ("%s%s", str, base[i] ? "." : "");
-
-		} while (base[i]);
+		size_t r;
 
 		printf (" ");
+		r = print_len_str_pairs (base, optlen, ".", true);
+		if (r <= 1)
+			break;
 
+		optlen -= r;
+		base += r;
 	}
-
 	printf("\n");
 
 	fputs (_("  DNS search list lifetime: "), stdout);
